@@ -63,12 +63,11 @@ class CliWampApi(ComponentSession):
     def on_run(self):
         config = lie_cli_parser()
 
-        # # Define method uri
+        # Define method uri
         uri = config['uri']
         del config['package_config']['uri']
 
         # Call method and wait for results
-        with self.group_context('mdgroup'):
-            deferred = self.call(uri, config["package_config"])
-            deferred.addCallback(self._result_callback)
-            deferred.addErrback(self._error_callback)
+        deferred = self.call(uri, config["package_config"])
+        deferred.addCallback(self._result_callback)
+        deferred.addErrback(self._error_callback)

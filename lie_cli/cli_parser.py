@@ -16,6 +16,9 @@ Call a method exposed by a MDStudio microservice using it's public URI
 
 """
 
+# If file path, read file content and transport "over wire"
+PARSE_FILES = True
+
 
 def _commandline_arg_py2(bytestring):
     """
@@ -128,8 +131,23 @@ def lie_cli_parser():
         try:
             if isinstance(v, list):
                 options['package_config'][k] = [_abspath(n) for n in v if n]
+
+                file_content = []
+                if PARSE_FILES:
+                    for f in options['package_config'][k]:
+                        if os.path.isfile(f):
+                            with open(f) as ff:
+                                file_content.append(ff.read())
+                if file_content:
+                    options['package_config'][k] = file_content
+
             else:
                 options['package_config'][k] = _abspath(v)
+
+                if PARSE_FILES and os.path.isfile(options['package_config'][k]):
+                    with open(options['package_config'][k]) as ff:
+                        options['package_config'][k] = ff.read()
+
         except TypeError:
             pass
 

@@ -9,6 +9,8 @@ import re
 import os
 import sys
 
+from type_convert import FormatDetect
+
 USAGE = """
 MDStudio command line interface.
 
@@ -125,6 +127,13 @@ def lie_cli_parser():
     # Parse all unknown arguments. These are the keyword arguments passed to
     # the microservice method
     options['package_config'] = _parse_variable_arguments(method_args)
+
+    # Try to type check and convert variables.
+    # TODO: This needs to be replaced by a method that fetches the JSON Schema
+    # for the endpoint and use it for type checking/converting.
+    format_convert = FormatDetect()
+    for k, v in options['package_config'].items():
+        options['package_config'][k] = format_convert.parse(v)
 
     # Check if there are file path among the variables and convert to absolute paths
     for k, v in options['package_config'].items():

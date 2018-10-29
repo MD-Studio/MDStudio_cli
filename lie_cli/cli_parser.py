@@ -9,8 +9,6 @@ import re
 import os
 import sys
 
-from type_convert import FormatDetect
-
 USAGE = """
 MDStudio command line interface.
 
@@ -117,6 +115,9 @@ def lie_cli_parser():
 
     # Parse application session and microservice WAMP arguments
     parser.add_argument('-u', '--uri', type=_commandline_arg, dest='uri', required=True, help='Microservice method URI')
+    parser.add_argument('-i', '--info', action='store_true', dest='get_endpoint_info', help='Get method API')
+    parser.add_argument('-j', '--store_json', action='store_true', dest="store_json", help='Store results as JSON')
+    parser.add_argument('-l', '--log', type=_commandline_arg, dest='log_level', default='none', help='Log level')
 
     # parse command line arguments
     options, method_args = parser.parse_known_args()
@@ -127,40 +128,5 @@ def lie_cli_parser():
     # Parse all unknown arguments. These are the keyword arguments passed to
     # the microservice method
     options['package_config'] = _parse_variable_arguments(method_args)
-
-    # Try to type check and convert variables.
-    # TODO: This needs to be replaced by a method that fetches the JSON Schema
-    # for the endpoint and use it for type checking/converting.
-    format_convert = FormatDetect()
-    for k, v in options['package_config'].items():
-        options['package_config'][k] = format_convert.parse(v)
-
-    # Check if there are file path among the variables and convert to absolute paths
-    for k, v in options['package_config'].items():
-        try:
-            if isinstance(v, list):
-                options['package_config'][k] = [_abspath(n) for n in v if n]
-
-                file_content = []
-                if PARSE_FILES:
-                    for f in options['package_config'][k]:
-                        if os.path.isfile(f):
-                            with open(f) as ff:
-                                file_content.append(ff.read())
-                if file_content:
-                    options['package_config'][k] = file_content
-
-            else:
-                options['package_config'][k] = _abspath(v)
-
-                if PARSE_FILES and os.path.isfile(options['package_config'][k]):
-                    with open(options['package_config'][k]) as ff:
-                        options['package_config'][k] = ff.read()
-
-        except TypeError:
-            pass
-
-    # Add method URI
-    options['package_config']['uri'] = options['uri']
 
     return options

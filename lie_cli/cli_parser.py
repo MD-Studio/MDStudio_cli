@@ -119,6 +119,10 @@ def lie_cli_parser():
     parser.add_argument('-j', '--store_json', action='store_true', dest="store_json", help='Store results as JSON')
     parser.add_argument('-l', '--log', type=_commandline_arg, dest='log_level', default='none', help='Log level')
 
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
+
     # parse command line arguments
     options, method_args = parser.parse_known_args()
 

@@ -100,10 +100,11 @@ def prepaire_config(schema, config):
 
         return d
 
-    param_dict = recursive_remove_none(param_dict)
-
-    return param_dict
-
+    if param_dict is not None:
+        param_dict = recursive_remove_none(param_dict)
+        return param_dict
+    else:
+        return {}
 
 def create_unique_filename(path, existing):
 

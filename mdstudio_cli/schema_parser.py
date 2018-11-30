@@ -69,6 +69,8 @@ def prepaire_config(schema, config):
 
     :param schema:  JSON schema object
     :type schema:   :lie_graph:GraphAxis
+    :param config:  command line arguments to process
+    :type config:   :py:dict
 
     :return:        endpoint input data
     :rtype:         :py:dict
@@ -105,6 +107,7 @@ def prepaire_config(schema, config):
         return param_dict
     else:
         return {}
+
 
 def create_unique_filename(path, existing):
 
@@ -216,14 +219,14 @@ def schema_uri_to_dict(uri, request=True):
     # Parse MDStudio resource URI
     if '//' in uri:
         if len(split_uri) != 5:
-            raise FormatError('Invalid MDStudio schema uri: {0}'.format(uri))
+            raise IOError('Invalid MDStudio schema uri: {0}'.format(uri))
         uri_dict = dict(zip(mdstudio_urischema[:4], split_uri[:4]))
         uri_dict[u'version'] = int(split_uri[-1].strip(u'v'))
 
     # Parse WAMP URI
     else:
         if len(split_uri) != 4:
-            raise FormatError('Invalid WAMP schema uri: {0}'.format(uri))
+            raise IOError('Invalid WAMP schema uri: {0}'.format(uri))
         uri_dict = dict(zip(wamp_urischema, split_uri))
         uri_dict[u'name'] = u'{0}_{1}'.format(uri_dict[u'name'], u'request' if request else u'response')
         uri_dict[u'version'] = 1
@@ -341,14 +344,17 @@ class SchemaParser(object):
         The method returns a Twisted deferred object for which the results
         can be obtained using `yield`.
 
-        :param uri:     MDStudio endpoint or resource JSON Schema URI to
-                        retrieve
-        :type uri:      :py:str
-        :param kwargs:  additional keyword arguments are passed to the
-                        `schema_uri_to_dict` function
-        :type kwargs:   :py:dict
+        :param uri:         MDStudio endpoint or resource JSON Schema URI to
+                            retrieve
+        :type uri:          :py:str
+        :param clean_cache: clean the uri cache used to limit calls to the
+                            same uri
+        :type clean_cache:  :py:bool
+        :param kwargs:      additional keyword arguments are passed to the
+                            `schema_uri_to_dict` function
+        :type kwargs:       :py:dict
 
-        :return:        Schema as Twisted deferred object
+        :return:            Schema as Twisted deferred object
         """
 
         # Parse uri elements to dictionary

@@ -17,8 +17,8 @@ from lie_graph.graph_io.io_jsonschema_format import read_json_schema
 from mdstudio.component.session import ComponentSession
 from mdstudio.deferred.chainable import chainable
 
-from lie_cli.schema_parser import SchemaParser, write_schema_info, prepaire_config, process_results
-from lie_cli.schema_classes import CLIORM
+from mdstudio_cli.schema_parser import SchemaParser, write_schema_info, prepaire_config, process_results
+from mdstudio_cli.schema_classes import CLIORM
 
 lg = logging.getLogger('clilogger')
 

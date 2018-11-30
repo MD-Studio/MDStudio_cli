@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python -m lie_cli -u mdgroup.lie_structures.endpoint.supported_toolkits
+python -m mdstudio_cli -u mdgroup.lie_structures.endpoint.supported_toolkits

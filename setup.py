@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# package: lie_cli
+# package: mdstudio_cli
 # file: setup.py
 #
-# Part of ‘lie_cli’, a package providing cli access for the LIEStudio
-# package.
+# Part of ‘mdstudio_cli’, a package providing command line access to the
+# services in the MDStudio micro service ecosystem.
 #
 # Copyright © 2016 Marc van Dijk, VU University Amsterdam, the Netherlands
 #
@@ -23,14 +23,14 @@
 
 from setuptools import setup, find_packages
 
-distribution_name = 'lie_cli'
+distribution_name = 'mdstudio_cli'
 
 
 setup(
     name=distribution_name,
     version='1.0.0',
     license='Apache Software License 2.0',
-    description='CLI component for the LIEStudio application',
+    description='CLI component for the MDStudio application',
     author='Marc van Dijk - VU University - Amsterdam,' \
            'Paul Visscher - Zefiros Software (www.zefiros.eu),' \
            'Felipe Zapata - eScience Center (https://www.esciencecenter.nl/)',
@@ -52,6 +52,6 @@ setup(
         'Operating System :: OS Independent',
         'Intended Audience :: Science/Research',
     ],
-    entry_points = {'console_scripts': ['mdstudio-cli = lie_cli.cli_entry_point:main']},
+    entry_points={'console_scripts': ['mdstudio-cli = mdstudio_cli.cli_entry_point:cli_main']},
     extras_require={'test': ['coverage']},
 )

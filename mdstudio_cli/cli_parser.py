@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Command Line Interface to the methods exposed by LIEStudio microservices
+Command Line Interface to the methods exposed by MDStudio microservices
 """
 
 import argparse
@@ -103,7 +103,7 @@ def _parse_variable_arguments(args, prefix='-'):
     return method_args
 
 
-def lie_cli_parser():
+def mdstudio_cli_parser():
     """
     Command Line Interface parser
 

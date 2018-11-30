@@ -8,7 +8,7 @@ Call MDStudio microservice methods from the UNIX command line
 
 import os
 
-__module__ = 'lie_cli'
+__module__ = 'mdstudio_cli'
 __docformat__ = 'restructuredtext'
 __version__ = '{major:d}.{minor:d}'.format(major=0, minor=2)
 __author__ = 'Marc van Dijk'

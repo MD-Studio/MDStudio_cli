@@ -52,7 +52,6 @@ setup(
         'Operating System :: OS Independent',
         'Intended Audience :: Science/Research',
     ],
-    extras_require={
-        'test': ['coverage']
-    }
+    entry_points = {'console_scripts': ['mdstudio-cli = lie_cli.cli_entry_point:main']},
+    extras_require={'test': ['coverage']},
 )

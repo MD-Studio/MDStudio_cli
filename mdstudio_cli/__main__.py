@@ -4,23 +4,15 @@
 mdstudio_cli __main__. Calling the python package as command line executable
 """
 
-import logging
 import sys
+import os
 
-from mdstudio.runner import main
+module_path = os.path.realpath(os.path.join(__file__, '../../'))
+if module_path not in sys.path:
+    sys.path.insert(0, module_path)
 
-from mdstudio_cli.wamp_services import CliWampApi
-from mdstudio_cli.cli_parser import mdstudio_cli_parser
-
-# Override txaio logger to print result to stdout
-lg = logging.getLogger('clilogger')
-lg.setLevel(logging.INFO)
-lg.addHandler(logging.StreamHandler(sys.stdout))
-
+from mdstudio_cli.cli_entry_point import cli_main
 
 if __name__ == '__main__':
 
-    # Parse command line arguments
-    config = mdstudio_cli_parser()
-
-    main(CliWampApi,  auto_reconnect=False, log_level=config['log_level'], extra=config)
+    cli_main()

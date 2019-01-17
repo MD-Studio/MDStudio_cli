@@ -33,4 +33,4 @@ def cli_main():
     # Parse command line arguments
     config = mdstudio_cli_parser()
 
-    main(CliWampApi, auto_reconnect=False, log_level=config['log_level'], extra=config)
+    main(CliWampApi, auto_reconnect=False, log_level=config['log_level'], extra=config, daily_log=False)

@@ -14,5 +14,4 @@ if module_path not in sys.path:
 from mdstudio_cli.cli_entry_point import cli_main
 
 if __name__ == '__main__':
-
     cli_main()

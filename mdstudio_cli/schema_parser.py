@@ -269,7 +269,7 @@ class SchemaParser(object):
         # Cache schema's to limit calls
         self._schema_cache = {}
 
-    def _get_refs(self, schema, refs=[]):
+    def _get_refs(self, schema, refs=None):
         """
         Get JSON Schema reference URI's ($ref) from a JSON Schema document.
 
@@ -284,7 +284,7 @@ class SchemaParser(object):
             if key == u'$ref':
                 refs.append(value)
             elif isinstance(value, dict):
-                self._get_refs(value, refs=refs)
+                self._get_refs(value, refs=refs or [])
 
         return refs
 
@@ -312,7 +312,7 @@ class SchemaParser(object):
                     self.session.component_config.static.vendor).call(
                     self.schema_endpoint, uri_dict,
                     claims={u'vendor': self.session.component_config.static.vendor})
-            except:
+            except Exception:
                 logging.error('Unable to call endpoint: {0}'.format(uri))
 
             self._schema_cache[uri] = response

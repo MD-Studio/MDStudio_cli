@@ -1,16 +1,20 @@
-# MDStudio_cli
+# MDStudio CLI
+
+[![Build Status](https://travis-ci.com/MD-Studio/MDStudio_cli.svg?branch=master)](https://travis-ci.com/MD-Studio/MDStudio_cli)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b21e0d5c29bd44a288525823cfb079bf)](https://www.codacy.com/manual/marcvdijk/MDStudio_cli?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MD-Studio/MDStudio_cli&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/MD-Studio/MDStudio_cli/branch/master/graph/badge.svg)](https://codecov.io/gh/MD-Studio/MDStudio_cli)
+
+![Configuration settings](mdstudio-logo.png)
 
 Command line interface to interact with [MDStudio](https://github.com/MD-Studio/MDStudio)
 microservices.
 
 ## Installation
-
 Clone or download the `mdstudio_cli` repository from Github and install using Python pip (PyPI) as:
 
-> ```pip install mdstudio_cli```
+```pip install mdstudio_cli```
 
 ## Usage
-
 1) Get basic usage information and configuration options for the command line as:
 
    ```mdstudio-cli -h```

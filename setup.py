@@ -25,25 +25,27 @@ from setuptools import setup, find_packages
 
 distribution_name = 'mdstudio_cli'
 
-
 setup(
     name=distribution_name,
-    version='1.0.0',
-    license='Apache Software License 2.0',
+    version=0.1,
     description='CLI component for the MDStudio application',
-    author='Marc van Dijk - VU University - Amsterdam,' \
-           'Paul Visscher - Zefiros Software (www.zefiros.eu),' \
-           'Felipe Zapata - eScience Center (https://www.esciencecenter.nl/)',
-    author_email='m4.van.dijk@vu.nl, contact@zefiros.eu',
-    url='https://github.com/MD-Studio/MDStudio',
-    keywords='MDStudio CLI',
+    author="""
+    Marc van Dijk - VU University - Amsterdam
+    Paul Visscher - Zefiros Software (www.zefiros.eu)
+    Felipe Zapata - eScience Center (https://www.esciencecenter.nl/)""",
+    author_email=['m4.van.dijk@vu.nl', 'f.zapata@esciencecenter.nl'],
+    url='https://github.com/MD-Studio/MDStudio_cli',
+    license='Apache Software License 2.0',
+    keywords='MDStudio commandline CLI',
     platforms=['Any'],
     packages=find_packages(),
     py_modules=[distribution_name],
-    install_requires=['mdstudio'],
-    test_suite="tests",
+    install_requires=['py-graphit'],
+    extras_require={'test': ['requests']},
+    dependency_links=["https://github.com/cinfony/cinfony/tarball/master#egg=cinfony-1.2"],
     include_package_data=True,
     zip_safe=True,
+    entry_points={'console_scripts': ['mdstudio-cli = mdstudio_cli.cli_entry_point:cli_main']},
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: Apache Software License',
@@ -51,7 +53,5 @@ setup(
         'Topic :: System',
         'Operating System :: OS Independent',
         'Intended Audience :: Science/Research',
-    ],
-    entry_points={'console_scripts': ['mdstudio-cli = mdstudio_cli.cli_entry_point:cli_main']},
-    extras_require={'test': ['coverage']},
+    ]
 )

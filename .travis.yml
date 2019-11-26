@@ -9,7 +9,7 @@ python:
   - "3.6"
 
 install:
-  - (git clone git://github.com/MD-Studio/MDStudio.git --branch v1 --single-branch && pip install -e MDStudio/mdstudio)
+  - (git clone git://github.com/MD-Studio/MDStudio.git --branch master --single-branch && pip install -e MDStudio/mdstudio))
 
   # install library
   - pip install codecov

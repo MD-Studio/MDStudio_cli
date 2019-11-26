@@ -12,7 +12,7 @@ import logging
 
 from twisted.internet import reactor
 from autobahn.wamp.exception import ApplicationError
-from lie_graph.graph_io.io_jsonschema_format import read_json_schema
+from graphit.graph_io.io_jsonschema_format import read_json_schema
 
 from mdstudio.component.session import ComponentSession
 from mdstudio.deferred.chainable import chainable

@@ -10,8 +10,8 @@ based on their JSON Schema definitions.
 import os
 import logging
 
-from lie_graph.graph_axis.graph_axis_mixin import NodeAxisTools
-from lie_graph.graph_orm import GraphORM
+from graphit.graph_axis.graph_axis_mixin import NodeAxisTools
+from graphit.graph_orm import GraphORM
 
 lg = logging.getLogger('clilogger')
 
@@ -92,10 +92,10 @@ class ArrayType(NodeAxisTools):
         for item in data:
             try:
                 item = float(item)
-            except:
+            except ValueError:
                 try:
                     item = int(item)
-                except:
+                except ValueError:
                     item = str(item)
 
             formatted.append(item)
@@ -104,9 +104,9 @@ class ArrayType(NodeAxisTools):
 
 
 CLIORM = GraphORM()
-CLIORM.map_node(StringType, type='string')
-CLIORM.map_node(IntegerType, type='integer')
-CLIORM.map_node(FloatType, type='number')
-CLIORM.map_node(BooleanType, type='boolean')
-CLIORM.map_node(ArrayType, type='array')
-CLIORM.map_node(FileType, format='file')
+CLIORM.node_mapping.add(StringType, lambda x: x.get('type') == 'string')
+CLIORM.node_mapping.add(IntegerType, lambda x: x.get('type') == 'integer')
+CLIORM.node_mapping.add(FloatType, lambda x: x.get('type') == 'number')
+CLIORM.node_mapping.add(BooleanType, lambda x: x.get('type') == 'boolean')
+CLIORM.node_mapping.add(ArrayType, lambda x: x.get('type') == 'array')
+CLIORM.node_mapping.add(FileType, lambda x: x.get('format') == 'file')

@@ -12,7 +12,7 @@ import shutil
 from mdstudio.deferred.chainable import chainable
 from mdstudio.deferred.return_value import return_value
 
-from lie_graph.graph_io.io_dict_format import write_dict, read_dict
+from graphit.graph_io.io_pydata_format import write_pydata, read_pydata
 
 urisplitter = re.compile("[^\\w']+")
 mdstudio_urischema = (u'type', u'group', u'component', u'name', u'version')
@@ -89,7 +89,7 @@ def prepaire_config(schema, config):
         raise AttributeError('Unknow arguments: {0}'.format(', '.join(not_parsed)))
 
     # Build parameter dictionary from JSON Schema
-    param_dict = write_dict(schema)
+    param_dict = write_pydata(schema)
 
     # Remove all 'value' parameters with value None.
     def recursive_remove_none(d):
@@ -140,7 +140,7 @@ def process_results(results):
     if not isinstance(results, dict):
         raise AttributeError('Returned endpoint results should be a dict. Got: {0}'.format(type(results)))
 
-    result_graph = read_dict(results)
+    result_graph = read_pydata(results)
 
     # Export all file-like objects to disk
     currdir = os.getcwd()
@@ -179,7 +179,7 @@ def process_results(results):
         result_graph.remove_nodes(nodes_to_remove)
 
     # Export remaining parameters
-    flattened = write_dict(result_graph, nested=False)
+    flattened = write_pydata(result_graph)
     for key, value in flattened.items():
         lg.info('{0} = {1}'.format(key, value))
 

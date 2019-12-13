@@ -27,7 +27,7 @@ distribution_name = 'mdstudio_cli'
 
 setup(
     name=distribution_name,
-    version=0.1,
+    version=1.0,
     description='CLI component for the MDStudio application',
     author="""
     Marc van Dijk - VU University - Amsterdam

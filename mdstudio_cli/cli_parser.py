@@ -91,7 +91,7 @@ def _parse_variable_arguments(args, prefix='-'):
         # Check for double declaration of keywords, not allowed
         var_name = argument[0].strip(prefix)
         if var_name in method_args:
-            raise AttributeError, 'Variable declared twice: {0}'.format(var_name)
+            raise AttributeError('Variable declared twice: {0}'.format(var_name))
         
         # Format boolean argument
         if len(argument) == 1:

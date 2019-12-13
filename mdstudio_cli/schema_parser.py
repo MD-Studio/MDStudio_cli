@@ -316,8 +316,11 @@ class SchemaParser(object):
                 logging.error('Unable to call endpoint: {0}'.format(uri))
 
             self._schema_cache[uri] = response
-            for refs in set(self._get_refs(response)):
-                yield self._recursive_schema_call(schema_uri_to_dict(refs))
+            refs = self._get_refs(response)
+
+            if refs:
+                for ref in set(refs):
+                    yield self._recursive_schema_call(schema_uri_to_dict(ref))
 
     def _build_schema(self, schema):
         """

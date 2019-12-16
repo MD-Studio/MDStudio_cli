@@ -58,7 +58,7 @@ def write_schema_info(schema, uri):
             arg_type = arg_type[0]
 
         lg.info('  --{0:<30}  {1:<8}  {2:<8}  {3:<8}  {4}'.format(re.sub('^root.', '', arg), required, arg_type,
-                                                                  pr.get('default', ''), pr.get('description', '')))
+                                                                str(pr.get('default', '')), pr.get('description', '')))
 
 
 def prepaire_config(schema, config):

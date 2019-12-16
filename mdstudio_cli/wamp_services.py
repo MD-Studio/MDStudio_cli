@@ -92,7 +92,6 @@ class CliWampApi(ComponentSession):
         # Retrieve JSON schemas for the endpoint request and response
         schemaparser = SchemaParser(self)
         request = yield schemaparser.get(uri=config['uri'], request=True)
-
         request = read_json_schema(request)
         request.orm = CLIORM
 

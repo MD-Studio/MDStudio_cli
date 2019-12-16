@@ -21,7 +21,7 @@ class IntegerType(NodeAxisTools):
     def set_cli_value(self, data):
 
         parsed = int(data)
-        self.nodes[self.nid][self.node_value_tag] = parsed
+        self.nodes[self.nid][self.data.value_tag] = parsed
 
 
 class FloatType(NodeAxisTools):
@@ -29,7 +29,7 @@ class FloatType(NodeAxisTools):
     def set_cli_value(self, data):
 
         parsed = float(data)
-        self.nodes[self.nid][self.node_value_tag] = parsed
+        self.nodes[self.nid][self.data.value_tag] = parsed
 
 
 class BooleanType(NodeAxisTools):
@@ -37,7 +37,7 @@ class BooleanType(NodeAxisTools):
     def set_cli_value(self, data):
 
         parsed = bool(data)
-        self.nodes[self.nid][self.node_value_tag] = parsed
+        self.nodes[self.nid][self.data.value_tag] = parsed
 
 
 class StringType(NodeAxisTools):
@@ -45,7 +45,7 @@ class StringType(NodeAxisTools):
     def set_cli_value(self, data):
 
         parsed = str(data)
-        self.nodes[self.nid][self.node_value_tag] = parsed
+        self.nodes[self.nid][self.data.value_tag] = parsed
 
 
 class FileType(NodeAxisTools):
@@ -56,10 +56,10 @@ class FileType(NodeAxisTools):
         file_obj = {u'path': None, u'extension': None, u'content': None, u'encoding': u'utf8'}
 
         # File object defined
-        children = dict([(n.get(self.node_key_tag), n) for n in list(self.children())])
+        children = dict([(n.get(self.data.key_tag), n) for n in list(self.children())])
 
         # Hack for SMILES strings
-        if children.get(u'extension', {}).get(self.node_value_tag) == 'smi' and not os.path.isfile(path):
+        if children.get(u'extension', {}).get(self.data.value_tag) == 'smi' and not os.path.isfile(path):
             file_obj[u'extension'] = 'smi'
             file_obj[u'content'] = str(path)
 
@@ -73,13 +73,12 @@ class FileType(NodeAxisTools):
             with open(path, 'r') as inf:
                 file_obj[u'content'] = inf.read()
 
-        if children.keys() == [u'content', u'path', u'extension', u'encoding']:
-            children[u'path'].set(self.node_value_tag, file_obj[u'path'])
-            children[u'extension'].set(self.node_value_tag, file_obj[u'extension'])
-            children[u'content'].set(self.node_value_tag, file_obj[u'content'])
-
+        if set(children.keys()) == {u'content', u'path', u'extension', u'encoding'}:
+            children[u'path'].set(self.data.value_tag, file_obj[u'path'])
+            children[u'extension'].set(self.data.value_tag, file_obj[u'extension'])
+            children[u'content'].set(self.data.value_tag, file_obj[u'content'])
         else:
-            self.nodes[self.nid][self.node_value_tag] = file_obj
+            self.nodes[self.nid][self.data.value_tag] = file_obj
 
 
 class ArrayType(NodeAxisTools):
@@ -100,7 +99,7 @@ class ArrayType(NodeAxisTools):
 
             formatted.append(item)
 
-        self.nodes[self.nid][self.node_value_tag] = formatted
+        self.nodes[self.nid][self.data.value_tag] = formatted
 
 
 CLIORM = GraphORM()

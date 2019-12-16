@@ -68,7 +68,7 @@ def prepaire_config(schema, config):
     Process command line arguments to the endpoint according to the schema definitions
 
     :param schema:  JSON schema object
-    :type schema:   :lie_graph:GraphAxis
+    :type schema:   :graphit:GraphAxis
     :param config:  command line arguments to process
     :type config:   :py:dict
 
@@ -276,15 +276,18 @@ class SchemaParser(object):
         :param schema: JSON Schema
         :type schema:  :py:dict
 
-        :return:       list of refered JSON schema's
+        :return:       list of referred JSON schema's
         :rtype:        :py:list
         """
+
+        if refs is None:
+            refs = []
 
         for key, value in schema.items():
             if key == u'$ref':
                 refs.append(value)
             elif isinstance(value, dict):
-                self._get_refs(value, refs=refs or [])
+                self._get_refs(value, refs=refs)
 
         return refs
 
@@ -327,7 +330,9 @@ class SchemaParser(object):
         Build full JSON Schema from source and referenced schemas
         """
 
-        for key, value in schema.items():
+        for key in list(schema.keys()):
+
+            value = schema[key]
             if isinstance(value, dict):
                 if u'$ref' in value:
                     schema[key].update(self._schema_cache[value[u'$ref']])

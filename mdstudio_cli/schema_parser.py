@@ -94,15 +94,17 @@ def prepaire_config(schema, config):
     # Remove all 'value' parameters with value None.
     def recursive_remove_none(d):
 
-        for k, v in d.items():
-            if k == 'value' and v is None:
+        for k in list(d.keys()):
+            value = d[k]
+            if value is None:
                 del d[k]
-            elif isinstance(v, dict):
-                d[k] = recursive_remove_none(v)
+            elif isinstance(value, dict):
+                d[k] = recursive_remove_none(value)
 
         return d
 
     if param_dict is not None:
+        lg.info(param_dict)
         param_dict = recursive_remove_none(param_dict)
         return param_dict
     else:

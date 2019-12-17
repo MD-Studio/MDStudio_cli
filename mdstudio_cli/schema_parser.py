@@ -80,7 +80,7 @@ def prepaire_config(schema, config):
     for arg in schema.query_nodes({u'schema_label': u'properties'}).iternodes():
         arg_path = re.sub('^root.', '', arg.path())
         if arg_path in config:
-            arg.set_cli_value(config[arg_path])
+            arg.set(schema.data.value_tag, config[arg_path])
             parsed.append(arg_path)
 
     # Raise AttributeError in case of unknown arguments in config
@@ -104,7 +104,6 @@ def prepaire_config(schema, config):
         return d
 
     if param_dict is not None:
-        lg.info(param_dict)
         param_dict = recursive_remove_none(param_dict)
         return param_dict
     else:

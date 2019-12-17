@@ -18,74 +18,67 @@ lg = logging.getLogger('clilogger')
 
 class IntegerType(NodeAxisTools):
 
-    def set_cli_value(self, data):
+    def set(self, key, value=None):
 
-        parsed = int(data)
-        self.nodes[self.nid][self.data.value_tag] = parsed
+        parsed = int(value)
+        self.nodes[self.nid][key] = parsed
 
 
 class FloatType(NodeAxisTools):
 
-    def set_cli_value(self, data):
+    def set(self, key, value=None):
 
-        parsed = float(data)
-        self.nodes[self.nid][self.data.value_tag] = parsed
+        parsed = float(value)
+        self.nodes[self.nid][key] = parsed
 
 
 class BooleanType(NodeAxisTools):
 
-    def set_cli_value(self, data):
+    def set(self, key, value=None):
 
-        parsed = bool(data)
-        self.nodes[self.nid][self.data.value_tag] = parsed
-
-
-class StringType(NodeAxisTools):
-
-    def set_cli_value(self, data):
-
-        parsed = str(data)
-        self.nodes[self.nid][self.data.value_tag] = parsed
+        parsed = bool(value)
+        self.nodes[self.nid][key] = parsed
 
 
 class FileType(NodeAxisTools):
 
-    def set_cli_value(self, path):
+    def set(self, key, value=None):
 
         # default file object
         file_obj = {u'path': None, u'extension': None, u'content': None, u'encoding': u'utf8'}
 
         # File object defined
-        children = dict([(n.get(self.data.key_tag), n) for n in list(self.children())])
+        children = dict([(n.get(key), n) for n in list(self.children())])
 
         # Hack for SMILES strings
-        if children.get(u'extension', {}).get(self.data.value_tag) == 'smi' and not os.path.isfile(path):
+        lg.info(self.children().values())
+        if children.get(u'extension', {}).get(key) == 'smi' and not os.path.isfile(value):
             file_obj[u'extension'] = 'smi'
-            file_obj[u'content'] = str(path)
+            file_obj[u'content'] = str(value)
 
         else:
-            path = os.path.abspath(path)
-            if not os.path.isfile(path):
-                raise IOError('Argument {0} file does not exist: {1}'.format(self.key, path))
+            abspath = os.path.abspath(value)
+            if not os.path.isfile(abspath):
+                raise IOError('Argument {0} file does not exist: {1}'.format(self.key, value))
 
-            file_obj[u'path'] = path
-            file_obj[u'extension'] = os.path.splitext(path)[-1].lstrip('.')
-            with open(path, 'r') as inf:
+            file_obj[u'path'] = abspath
+            file_obj[u'extension'] = os.path.splitext(abspath)[-1].lstrip('.')
+            with open(abspath, 'r') as inf:
                 file_obj[u'content'] = inf.read()
 
         if set(children.keys()) == {u'content', u'path', u'extension', u'encoding'}:
             children[u'path'].set(self.data.value_tag, file_obj[u'path'])
-            children[u'extension'].set(self.data.value_tag, file_obj[u'extension'])
-            children[u'content'].set(self.data.value_tag, file_obj[u'content'])
+            children[u'extension'].set(key, file_obj[u'extension'])
+            children[u'content'].set(key, file_obj[u'content'])
         else:
-            self.nodes[self.nid][self.data.value_tag] = file_obj
+            self.nodes[self.nid][key] = file_obj
 
 
 class ArrayType(NodeAxisTools):
 
-    def set_cli_value(self, data):
+    def set(self, key, value=None):
 
-        data = [d.strip(',') for d in data]
+        data = [d.strip(',') for d in value]
         formatted = []
 
         for item in data:
@@ -99,11 +92,10 @@ class ArrayType(NodeAxisTools):
 
             formatted.append(item)
 
-        self.nodes[self.nid][self.data.value_tag] = formatted
+        self.nodes[self.nid][key] = formatted
 
 
 CLIORM = GraphORM()
-CLIORM.node_mapping.add(StringType, lambda x: x.get('type') == 'string')
 CLIORM.node_mapping.add(IntegerType, lambda x: x.get('type') == 'integer')
 CLIORM.node_mapping.add(FloatType, lambda x: x.get('type') == 'number')
 CLIORM.node_mapping.add(BooleanType, lambda x: x.get('type') == 'boolean')

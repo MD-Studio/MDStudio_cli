@@ -266,6 +266,10 @@ class SchemaParser(object):
 
         self.session = session
         self.schema_endpoint = u'mdstudio.schema.endpoint.get'
+        self.vendor = self.session.component_config.static.get('vendor')
+
+        if self.vendor is None:
+            raise AttributeError('MDStudio static.vendor not defined. "settings.yml" file may be missing')
 
         # Cache schema's to limit calls
         self._schema_cache = {}
@@ -312,10 +316,8 @@ class SchemaParser(object):
 
             response = {}
             try:
-                response = yield self.session.group_context(
-                    self.session.component_config.static.vendor).call(
-                    self.schema_endpoint, uri_dict,
-                    claims={u'vendor': self.session.component_config.static.vendor})
+                response = yield self.session.group_context(self.vendor).call(self.schema_endpoint, uri_dict,
+                                                                              claims={u'vendor': self.vendor})
             except Exception:
                 logging.error('Unable to call endpoint: {0}'.format(uri))
 
